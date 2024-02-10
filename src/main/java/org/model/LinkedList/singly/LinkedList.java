@@ -141,6 +141,7 @@ public class LinkedList<E> extends AbstractList<E> {
             while (iterator.hasNext()) {
                 E element = iterator.next();
                 newList.add(element);
+                size++;
             }
             newList.tail.setNext(head);
             this.head = newList.head;
@@ -150,7 +151,6 @@ public class LinkedList<E> extends AbstractList<E> {
         }
         return false;
     }
-
 
     @Override
     public E peek() {
@@ -194,7 +194,6 @@ public class LinkedList<E> extends AbstractList<E> {
         try {
             LinkedNode<E> current = head;
             E[] save = (E[]) new Object[n];
-            //Busco la posicion inicial
             for (int e = 0; e < size - n; e++) {
                 current = current.getNext();
             }
@@ -214,7 +213,7 @@ public class LinkedList<E> extends AbstractList<E> {
     public List<E> peekCollection(int n) {
         try {
             LinkedNode<E> current = head;
-            LinkedList<E> save = new LinkedList<>();
+            List<E> save = new LinkedList<>();
             for (int i = 0; i < n && current != null; i++) {
                 save.add(current.get());
                 current = current.getNext();
@@ -229,7 +228,9 @@ public class LinkedList<E> extends AbstractList<E> {
     @Override
     public List<E> peekLastCollection(int n) {
         try {
-            if (n>size) n=size;
+            if (n > size) {
+                n = size;
+            }
             LinkedNode<E> current = this.head;
             LinkedList<E> save = new LinkedList<>();
             for (int e = 0; e < size - n; e++) {
@@ -304,21 +305,21 @@ public class LinkedList<E> extends AbstractList<E> {
     public E[] pollLastArray(int n) {
         try {
             LinkedNode<E> current = head;
-            E[] save = (E[]) new Object[n];
-            for (int e = 0; e < size - n; e++) {
+            for (int e = 0; e < size - n - 1; e++) {
                 current = current.getNext();
             }
             LinkedNode<E> newTail = current;
-            newTail.setNext(null);
+            E[] save = (E[]) new Object[n];
             for (int i = 0; i < n; i++) {
-                save[i] = current.get();
                 current = current.getNext();
+                save[i] = current.get();
                 size--;
             }
             if (size == 0) {
                 head = null;
                 tail = null;
             } else {
+                newTail.setNext(null);
                 this.tail = newTail;
             }
             return save;
@@ -353,13 +354,12 @@ public class LinkedList<E> extends AbstractList<E> {
 
     @Override
     public List<E> pollLastCollection(int n) {
-        LinkedNode<E> current = this.head;
+        LinkedNode<E> current = head;
         LinkedList<E> save = new LinkedList<>();
-        for (int e = 0; e < size - n; e++) {
+        for (int e = 0; e < size - n-1; e++) {
             current = current.getNext();
         }
         LinkedNode<E> newTail = current;
-        newTail.setNext(null);
         for (int i = 0; i < n && current != null; i++) {
             current = current.getNext();
             save.add(current.get());
@@ -369,6 +369,7 @@ public class LinkedList<E> extends AbstractList<E> {
             head = null;
             tail = null;
         } else {
+            newTail.setNext(null);
             this.tail = newTail;
         }
         return save;
@@ -673,7 +674,7 @@ public class LinkedList<E> extends AbstractList<E> {
     @Override
     public boolean contains(E[] array) {
         boolean found = true;
-        for (int i = 0; i < size && found; i++) {
+        for (int i = 0; i < array.length && found; i++) {
             found = contains(array[i]);
         }
         return found;

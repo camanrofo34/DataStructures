@@ -63,17 +63,16 @@ public class Array<E> extends AbstractArray<E> {
     @Override
     public boolean add(int index, E[] array) {
         try {
-            int e=0;
-            int restSpaces=elements.length - index;
-            if (restSpaces>=array.length){
-                for (int i = index-1; i < array.length; i++) {
-                    elements[i]=array[e++];
+            int e = 0;
+            int restSpaces = elements.length - index;
+            if (restSpaces >= array.length) {
+                for (int i = index; e < array.length; i++) {
+                    elements[i] = array[e++];
                 }
                 return true;
-            }
-            else {
-                for (int i = index-1; i < elements.length; i++) {
-                    elements[i]=array[e++];
+            } else {
+                for (int i = index; e < elements.length; i++) {
+                    elements[i] = array[e++];
                 }
                 return false;
             }
@@ -94,14 +93,20 @@ public class Array<E> extends AbstractArray<E> {
     public boolean add(int index, Collection<E> collection) {
         try {
             Iterator<E> collectionIterator = collection.iterator();
-            int i = 0;
-            if (index < elements.length && index >= 0 && this.elements.length <= collection.size() && (collection.size() + index) <= elements.length) {
-                while (collectionIterator.hasNext()) {
-                    E element = collectionIterator.next();
-                    elements[index + i] = element;
-                    i++;
+            int e = 0;
+            int restSpaces = elements.length - index;
+            if (restSpaces >= collection.size()) {
+                for (int i = index; e < collection.size(); i++) {
+                    elements[i] = collectionIterator.next();
+                    e++;
                 }
                 return true;
+            } else {
+                for (int i = index; e < elements.length; i++) {
+                    elements[i] = collectionIterator.next();
+                    e++;
+                }
+                return false;
             }
         } catch (Exception e) {
             Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
@@ -157,7 +162,7 @@ public class Array<E> extends AbstractArray<E> {
         int index = -1;
         try {
             for (int i = 0; i < elements.length && index == -1; i++) {
-                if (elements[i].equals(element)) {
+                if (elements[i] != null && elements[i].equals(element)) {
                     index = i;
                 }
             }
@@ -177,8 +182,8 @@ public class Array<E> extends AbstractArray<E> {
     public int lastIndexOf(E element) {
         int index = -1;
         try {
-            for (int i = elements.length - 1; i >= 0 && index == -1; i++) {
-                if (elements[i].equals(element)) {
+            for (int i = elements.length - 1; i >= 0 && index == -1; i--) {
+                if (elements[i] != null && elements[i].equals(element)) {
                     index = i;
                 }
             }
@@ -214,7 +219,7 @@ public class Array<E> extends AbstractArray<E> {
     public boolean remove(Predicate<E> filter) {
         try {
             for (int i = 0; i < elements.length; i++) {
-                if (filter.test(elements[i])) {
+                if (elements[i] != null && filter.test(elements[i])) {
                     elements[i] = null;
                 }
             }
@@ -234,11 +239,12 @@ public class Array<E> extends AbstractArray<E> {
     @Override
     public boolean remove(int from, int to) {
         try {
-            if (to < elements.length && from >= 0 && to > 0 && from < to) {
+            if (to <= elements.length && from >= 0 && to > 0 && from < to) {
                 for (int i = from; i < to; i++) {
                     elements[i] = null;
                 }
             }
+            return true;
         } catch (Exception e) {
             Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
         }
@@ -308,7 +314,7 @@ public class Array<E> extends AbstractArray<E> {
     public boolean contains(E element) {
         try {
             for (E element1 : elements) {
-                if (element1 == element) {
+                if (element1.equals(element)) {
                     return true;
                 }
             }
@@ -364,7 +370,12 @@ public class Array<E> extends AbstractArray<E> {
      */
     @Override
     public boolean isEmpty() {
-        return elements.length == 0;
+        for (E element : elements) {
+            if (element != null) {
+                return false;
+            }
+        }
+        return true;
     }
 
     /**
