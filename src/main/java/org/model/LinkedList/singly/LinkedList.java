@@ -52,7 +52,7 @@ public class LinkedList<E> extends AbstractList<E> {
     public boolean add(E element) {
         try {
             LinkedNode<E> newNode = new LinkedNode<>(element, null);
-            if (isEmpty()) {
+            if (size == 0) {
                 head = newNode;
                 tail = newNode;
             } else {
@@ -247,13 +247,21 @@ public class LinkedList<E> extends AbstractList<E> {
         return null;
     }
 
-    @Override
     public E poll() {
         try {
-            E entrega = head.get();
-            this.head = head.getNext();
-            size--;
-            return entrega;
+            if (size == 0) {
+                return null;
+            } else {
+                E entrega = head.get();
+                if (size == 1) {
+                    head = head.getNext();
+                    tail = tail.getNext();
+                } else {
+                    head = head.getNext();
+                }
+                size--;
+                return entrega;
+            }
         } catch (Exception e) {
             Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
         }
@@ -263,15 +271,24 @@ public class LinkedList<E> extends AbstractList<E> {
     @Override
     public E pollLast() {
         try {
-            E entrega = tail.get();
-            LinkedNode<E> current = head;
-            do {
-                current = current.getNext();
-            } while (current.getNext() != tail);
-            current.setNext(null);
-            this.tail = current;
-            size--;
-            return entrega;
+            if (size == 0) {
+                return null;
+            } else {
+                E entrega = tail.get();
+                if (size == 1) {
+                    head = null;
+                    tail = null;
+                } else {
+                    LinkedNode<E> current = head;
+                    do {
+                        current = current.getNext();
+                    } while (current.getNext() != tail);
+                    current.setNext(null);
+                    tail = current;
+                }
+                size--;
+                return entrega;
+            }
         } catch (Exception e) {
             Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
         }
@@ -283,7 +300,7 @@ public class LinkedList<E> extends AbstractList<E> {
         try {
             LinkedNode<E> current = head;
             E[] save = (E[]) new Object[n];
-            for (int i = 0; i < n; i++) {
+            for (int i = 0; i < n && current!=null; i++) {
                 save[i] = current.get();
                 current = current.getNext();
                 size--;
@@ -292,7 +309,12 @@ public class LinkedList<E> extends AbstractList<E> {
                 head = null;
                 tail = null;
             } else {
-                this.head = current;
+                if (size == 1) {
+                    head = current;
+                    tail = current;
+                } else {
+                    head = current;
+                }
             }
             return save;
         } catch (Exception e) {
@@ -305,22 +327,27 @@ public class LinkedList<E> extends AbstractList<E> {
     public E[] pollLastArray(int n) {
         try {
             LinkedNode<E> current = head;
-            for (int e = 0; e < size - n - 1; e++) {
+            for (int e = 0; e < size - n; e++) {
                 current = current.getNext();
             }
             LinkedNode<E> newTail = current;
             E[] save = (E[]) new Object[n];
-            for (int i = 0; i < n; i++) {
-                current = current.getNext();
+            for (int i = 0; i < n && current!=null; i++) {
                 save[i] = current.get();
+                current = current.getNext();
                 size--;
             }
             if (size == 0) {
                 head = null;
                 tail = null;
             } else {
-                newTail.setNext(null);
-                this.tail = newTail;
+                if (size == 1) {
+                    head = current;
+                    tail = current;
+                } else {
+                    newTail.setNext(null);
+                    this.tail = newTail;
+                }
             }
             return save;
         } catch (Exception e) {
@@ -343,7 +370,12 @@ public class LinkedList<E> extends AbstractList<E> {
                 head = null;
                 tail = null;
             } else {
-                this.head = current;
+                if (size == 1) {
+                    head = current;
+                    tail = current;
+                } else {
+                    head = current;
+                }
             }
             return save;
         } catch (Exception e) {
@@ -356,11 +388,12 @@ public class LinkedList<E> extends AbstractList<E> {
     public List<E> pollLastCollection(int n) {
         LinkedNode<E> current = head;
         LinkedList<E> save = new LinkedList<>();
-        for (int e = 0; e < size - n-1; e++) {
+        for (int e = 0; e < size - n; e++) {
             current = current.getNext();
         }
         LinkedNode<E> newTail = current;
         for (int i = 0; i < n && current != null; i++) {
+            save.add(current.get());
             current = current.getNext();
             save.add(current.get());
             size--;
@@ -369,8 +402,13 @@ public class LinkedList<E> extends AbstractList<E> {
             head = null;
             tail = null;
         } else {
-            newTail.setNext(null);
-            this.tail = newTail;
+            if (size == 1) {
+                head = current;
+                tail = current;
+            } else {
+                newTail.setNext(null);
+                this.tail = newTail;
+            }
         }
         return save;
     }
@@ -394,6 +432,7 @@ public class LinkedList<E> extends AbstractList<E> {
             }
             if (current == tail) {
                 tail = previous;
+                tail.setNext(null);
             }
             size--;
             return true;
@@ -446,6 +485,7 @@ public class LinkedList<E> extends AbstractList<E> {
                     }
                     if (current == tail) {
                         tail = previous;
+                        tail.setNext(null);
                     }
                     current = current.getNext();
                     elementsRemoved = true;
@@ -529,6 +569,7 @@ public class LinkedList<E> extends AbstractList<E> {
                 }
                 if (current == tail) {
                     tail = previous;
+                    tail.setNext(null);
                 }
                 current = current.getNext();
                 elementsRetained = true;
@@ -556,6 +597,7 @@ public class LinkedList<E> extends AbstractList<E> {
                 }
                 if (current == tail) {
                     tail = previous;
+                    tail.setNext(null);
                 }
                 current = current.getNext();
                 elementsRetained = true;
@@ -616,6 +658,7 @@ public class LinkedList<E> extends AbstractList<E> {
                 next = next.getNext();
             }
         } while (swapped);
+        tail.setNext(null);
         return true;
     }
 
@@ -698,31 +741,28 @@ public class LinkedList<E> extends AbstractList<E> {
 
     @Override
     public boolean reverse() {
-        LinkedNode<E> current = head;
-        LinkedNode<E> previous = null;
-        LinkedNode<E> next;
-
-        while (current != null) {
-            next = current.getNext();
-            current.setNext(previous);
-            previous = current;
-            current = next;
+        LinkedNode<E> current = this.head;
+        Iterator<E> iterator = this.iterator();
+        E[] reverso = (E[]) new Object[size];
+        int i = 1;
+        while (iterator.hasNext()) {
+            E element = iterator.next();
+            reverso[size - i] = element;
+            i++;
         }
-        tail = head;
-        head = previous;
+        for (E element : reverso) {
+            current.set(element);
+            current = current.getNext();
+        }
         return true;
     }
 
     @Override
-    public int size() {
-        return size;
-    }
-
-    @Override
     public void forEach(Function<E, Void> action) {
-        LinkedNode<E> current = this.head;
+        LinkedNode<E> current = head;
         for (int i = 0; i < size; i++) {
-            action.apply(current.get());
+            E element = (E) action.apply(current.get());
+            current.set(element);
             current = current.getNext();
         }
     }

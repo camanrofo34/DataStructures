@@ -20,7 +20,7 @@ public class ArrayTest {
 
     @BeforeEach
     void setUp() {
-        array = new Array(5);
+        array = new Array(3);
     }
 
     @Test
@@ -37,6 +37,16 @@ public class ArrayTest {
         assertEquals("NewElement1", array.get(1));
         assertEquals("NewElement2", array.get(2));
     }
+    
+        @Test
+    void testAddAtIndexWithArrayMoreSpacesThan() {
+        array.add("Element1");
+        array.add("Element2");
+        assertFalse(array.add(1, new String[]{"NewElement1", "NewElement2", "NewElement3"}));
+        assertEquals("Element1", array.get(0));
+        assertEquals("NewElement1", array.get(1));
+        assertEquals("NewElement2", array.get(2));
+    }
 
     @Test
     void testAddAtIndexWithCollection() {
@@ -46,6 +56,20 @@ public class ArrayTest {
         collection.add("NewElement1");
         collection.add("NewElement2");
         assertTrue(array.add(1, collection));
+        assertEquals("NewElement1", array.get(1));
+        assertEquals("NewElement2", array.get(2));
+    }
+    
+    @Test
+    void testAddAtIndexWithCollectionMoreSpacesThan() {
+        array.add("Element1");
+        array.add("Element2");
+        LinkedList<String> collection = new LinkedList<>();
+        collection.add("NewElement1");
+        collection.add("NewElement2");
+        collection.add("NewElement3");
+        assertFalse(array.add(1, collection));
+        assertEquals("Element1", array.get(0));
         assertEquals("NewElement1", array.get(1));
         assertEquals("NewElement2", array.get(2));
     }
