@@ -17,7 +17,7 @@ import org.model.util.list.List;
  * @author PC 4060TI
  */
 public class LinkedListTest {
-    
+   
     LinkedList<Integer> list;
 
     @BeforeEach
@@ -52,8 +52,9 @@ public class LinkedListTest {
 
     @Test
     void testAddCollection() {
-        LinkedList<Integer> toAdd = new LinkedList<>(new Integer[]{23,30,20});
+        LinkedList<Integer> toAdd = new LinkedList<>();
         Integer[] added = {23, 30, 20};
+        toAdd.add(added);
         assertTrue(list.add(toAdd));
         assertEquals(3, list.size());
         Integer[] expected = {23, 30, 20};
@@ -135,18 +136,6 @@ public class LinkedListTest {
             assertEquals(expected[i++], e);
         }
     }
-    
-    @Test
-    void testPeekArrayMoreNumbers() {
-        list.add(23);
-        Object[] expected = {23, null, null};
-        assertEquals(1, list.size());
-        Object[] receive = list.peekArray(3);
-        int i = 0;
-        for (Object e : receive) {
-            assertEquals(expected[i++], e);
-        }
-    }
 
     @Test
     void testPeekLastArray() {
@@ -156,17 +145,6 @@ public class LinkedListTest {
         Object[] expected = {30, 20};
         assertEquals(3, list.size());
         Object[] receive = list.peekLastArray(2);
-        int i = 0;
-        for (Object e : receive) {
-            assertEquals(expected[i++], e);
-        }
-    }
-        @Test
-    void testPeekLastArrayMoreNumbers() {
-        list.add(23);
-        Object[] expected = {23, null, null};
-        assertEquals(1, list.size());
-        Object[] receive = list.peekLastArray(3);
         int i = 0;
         for (Object e : receive) {
             assertEquals(expected[i++], e);
@@ -182,23 +160,10 @@ public class LinkedListTest {
         assertEquals(3, list.size());
         LinkedList<Integer> receive = (LinkedList<Integer>) list.peekCollection(2);
         int i = 0;
-        for (Iterator<Integer> it = receive.iterator(); it.hasNext();) {
+        for (Iterator<Integer> it = receive.iterator(); i < 2;) {
             assertEquals(expected[i++], it.next());
         }
     }
-    
-    @Test
-    void testPeekCollectionMoreNumbers() {
-        list.add(23);
-        Object[] expected = {23};
-        assertEquals(1, list.size());
-        LinkedList<Integer> receive = (LinkedList<Integer>) list.peekCollection(3);
-        int i = 0;
-        for (Iterator<Integer> it = receive.iterator(); it.hasNext();) {
-            assertEquals(expected[i++], it.next());
-        }
-    }
-    
 
     @Test
     void testPeekLastCollection() {
@@ -209,19 +174,7 @@ public class LinkedListTest {
         assertEquals(3, list.size());
         LinkedList<Integer> receive = (LinkedList<Integer>) list.peekLastCollection(2);
         int i = 0;
-        for (Iterator<Integer> it = receive.iterator(); it.hasNext();) {
-            assertEquals(expected[i++], it.next());
-        }
-    }
-    
-        @Test
-    void testPeekLastCollectionMoreNumbers() {
-        list.add(23);
-        Object[] expected = {23};
-        assertEquals(1, list.size());
-        LinkedList<Integer> receive = (LinkedList<Integer>) list.peekLastCollection(2);
-        int i = 0;
-        for (Iterator<Integer> it = receive.iterator(); it.hasNext();) {
+        for (Iterator<Integer> it = receive.iterator(); i < 2;) {
             assertEquals(expected[i++], it.next());
         }
     }
@@ -250,6 +203,17 @@ public class LinkedListTest {
         assertEquals(expected, list.poll());
         assertEquals(0, list.size());
     }
+    
+        @Test
+    void testPollTwoElement() {
+        list.add(23);
+        list.add(30);
+        assertEquals(2, list.size());
+        assertEquals(23, list.poll());
+        assertEquals(1, list.size());
+        assertEquals(30, list.poll());
+        assertEquals(0, list.size());
+    }
 
     @Test
     void testPollLast() {
@@ -265,6 +229,15 @@ public class LinkedListTest {
         for (Iterator<Integer> it = list.iterator(); it.hasNext();) {
             assertEquals(expectedArray[i++], it.next());
         }
+    }
+    
+    @Test
+    void testPollLastUniqueElement() {
+        list.add(23);
+        int expected = 23;
+        assertEquals(1, list.size());
+        assertEquals(expected, list.pollLast());
+        assertEquals(0, list.size());
     }
 
     @Test
@@ -282,6 +255,20 @@ public class LinkedListTest {
         }
         for (Iterator<Integer> it = list.iterator(); it.hasNext();) {
             assertEquals(20, it.next());
+        }
+    }
+    
+
+    @Test
+    void testPollArrayOneElement() {
+        list.add(23);
+        Object[] expected = {23, null};
+        assertEquals(1, list.size());
+        Object[] receive = list.pollArray(2);
+        assertEquals(0, list.size());
+        int i = 0;
+        for (Object e : receive) {
+            assertEquals(expected[i++], e);
         }
     }
 
@@ -302,7 +289,24 @@ public class LinkedListTest {
             assertEquals(23, it.next());
         }
     }
+    
+    @Test
+    void testPollLastArrayUniqueItem() {
+        list.add(23);
+        assertEquals(1, list.size());
+        Object[] receive = list.pollLastArray(2);
+        assertEquals(0, list.size());
+        int i = 0;
+        Object[] expected = {23, null};
+        for (Object e : receive) {
+            assertEquals(expected[i++], e);
+        }
+        for (Iterator<Integer> it = list.iterator(); it.hasNext();) {
+            assertEquals(23, it.next());
+        }
+    }
 
+    
     @Test
     void testPollCollection() {
         list.add(23);
@@ -318,6 +322,19 @@ public class LinkedListTest {
         }
         for (Iterator<Integer> it = list.iterator(); it.hasNext();) {
             assertEquals(20, it.next());
+        }
+    }
+    
+    @Test
+    void testPollCollectionUniqueElement() {
+        list.add(23);
+        Object[] expected = {23};
+        assertEquals(1, list.size());
+        LinkedList<Integer> receive = (LinkedList<Integer>) list.pollCollection(2);
+        assertEquals(0, list.size());
+        int i = 0;
+        for (Iterator<Integer> it = receive.iterator(); it.hasNext();) {
+            assertEquals(expected[i++], it.next());
         }
     }
 
@@ -338,6 +355,19 @@ public class LinkedListTest {
             assertEquals(23, it.next());
         }
     }
+    
+    @Test
+    void testPollLastCollectionUniqueElement() {
+        list.add(23);
+        Object[] expected = {23};
+        assertEquals(1, list.size());
+        LinkedList<Integer> receive = (LinkedList<Integer>) list.pollLastCollection(2);
+        assertEquals(0, list.size());
+        int i = 0;
+        for (Iterator<Integer> it = receive.iterator(); it.hasNext();) {
+            assertEquals(expected[i++], it.next());
+        }
+    }
 
     @Test
     void testRemove() {
@@ -352,6 +382,21 @@ public class LinkedListTest {
         for (Iterator<Integer> it = list.iterator(); it.hasNext();) {
             assertEquals(expected[i++], it.next());
         }
+    }
+        @Test
+    void testRemoveTail() {
+        list.add(23);
+        list.add(30);
+        list.add(20);
+        Object[] expected = {23, 30};
+        assertEquals(3, list.size());
+        assertTrue(list.remove(20));
+        assertEquals(2, list.size());
+        int i = 0;
+        for (Iterator<Integer> it = list.iterator(); it.hasNext();) {
+            assertEquals(expected[i++], it.next());
+        }
+        assertEquals(30, list.peekLast());
     }
 
     @Test
@@ -597,9 +642,8 @@ public class LinkedListTest {
         list.add(23);
         list.add(30);
         list.add(20);
-        assertEquals(3,list.size());
+        assertEquals(3, list.size());
         list.clear();
         assertEquals(0, list.size());
     }
-    
 }

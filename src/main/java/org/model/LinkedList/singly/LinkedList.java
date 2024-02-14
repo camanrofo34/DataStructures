@@ -67,38 +67,6 @@ public class LinkedList<E> extends AbstractList<E> {
         return false;
     }
 
-    //Looks fine
-    @Override
-    public boolean add(E[] array) {
-        try {
-            for (E elemento : array) {
-                add(elemento);
-            }
-            return true;
-        } catch (Exception e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
-        }
-        return false;
-
-    }
-
-    //Its fine
-    @Override
-    public boolean add(Collection<E> collection) {
-        try {
-            Iterator<E> iterator = collection.iterator();
-            while (iterator.hasNext()) {
-                E element = iterator.next();
-                add(element);
-            }
-            return true;
-        } catch (Exception e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
-        }
-        return false;
-    }
-
-    //Looks fine
     @Override
     public boolean addFirst(E element) {
         try {
@@ -118,21 +86,6 @@ public class LinkedList<E> extends AbstractList<E> {
         return false;
     }
 
-    //Looks fine
-    @Override
-    public boolean addFirst(E[] array) {
-        try {
-            for (int i = array.length - 1; i >= 0; i--) {
-                addFirst(array[i]);
-            }
-            return true;
-        } catch (Exception e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
-        }
-        return false;
-    }
-
-    //Fine
     @Override
     public boolean addFirst(Collection<E> collection) {
         try {
@@ -173,50 +126,12 @@ public class LinkedList<E> extends AbstractList<E> {
     }
 
     @Override
-    public E[] peekArray(int n) {
-        try {
-            LinkedNode<E> current = head;
-            E[] save = (E[]) new Object[n];
-            for (int i = 0; i < n && current != null; i++) {
-                save[i] = current.get();
-                current = current.getNext();
-            }
-            return save;
-        } catch (Exception e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
-        }
-        return null;
-    }
-
-    //Looks fine
-    @Override
-    public E[] peekLastArray(int n) {
-        try {
-            LinkedNode<E> current = head;
-            E[] save = (E[]) new Object[n];
-            for (int e = 0; e < size - n; e++) {
-                current = current.getNext();
-            }
-            for (int i = 0; i < n && current != null; i++) {
-                save[i] = current.get();
-                current = current.getNext();
-            }
-            return save;
-        } catch (Exception e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
-        }
-        return null;
-    }
-
-    //Looks fine
-    @Override
     public List<E> peekCollection(int n) {
         try {
-            LinkedNode<E> current = head;
+            Iterator<E> iterator = this.iterator();
             List<E> save = new LinkedList<>();
-            for (int i = 0; i < n && current != null; i++) {
-                save.add(current.get());
-                current = current.getNext();
+            for (int i = 0; i < n && iterator.hasNext(); i++) {
+                save.add(iterator.next());
             }
             return save;
         } catch (Exception e) {
@@ -271,24 +186,26 @@ public class LinkedList<E> extends AbstractList<E> {
     @Override
     public E pollLast() {
         try {
+            E entrega = null;
             if (size == 0) {
                 return null;
-            } else {
-                E entrega = tail.get();
-                if (size == 1) {
-                    head = null;
-                    tail = null;
-                } else {
-                    LinkedNode<E> current = head;
-                    do {
-                        current = current.getNext();
-                    } while (current.getNext() != tail);
-                    current.setNext(null);
-                    tail = current;
-                }
-                size--;
-                return entrega;
             }
+            if (size == 1) {
+                entrega = head.get();
+                head = null;
+                tail = null;
+            } else {
+                LinkedNode<E> previous = null;
+                LinkedNode<E> current = head;
+                while (current.getNext() != null) {
+                    previous = current;
+                    current = current.getNext();
+                }
+                entrega = current.get();
+                previous.setNext(null);
+            }
+            size--;
+            return entrega;
         } catch (Exception e) {
             Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
         }
@@ -300,7 +217,7 @@ public class LinkedList<E> extends AbstractList<E> {
         try {
             LinkedNode<E> current = head;
             E[] save = (E[]) new Object[n];
-            for (int i = 0; i < n && current!=null; i++) {
+            for (int i = 0; i < n && current != null; i++) {
                 save[i] = current.get();
                 current = current.getNext();
                 size--;
@@ -332,7 +249,7 @@ public class LinkedList<E> extends AbstractList<E> {
             }
             LinkedNode<E> newTail = current;
             E[] save = (E[]) new Object[n];
-            for (int i = 0; i < n && current!=null; i++) {
+            for (int i = 0; i < n && current != null; i++) {
                 save[i] = current.get();
                 current = current.getNext();
                 size--;
@@ -359,23 +276,17 @@ public class LinkedList<E> extends AbstractList<E> {
     @Override
     public List<E> pollCollection(int n) {
         try {
-            LinkedNode<E> current = head;
-            LinkedList<E> save = new LinkedList<>();
-            for (int i = 0; i < n && current != null; i++) {
-                save.add(current.get());
-                current = current.getNext();
-                size--;
-            }
-            if (size == 0) {
-                head = null;
-                tail = null;
-            } else {
-                if (size == 1) {
-                    head = current;
-                    tail = current;
-                } else {
-                    head = current;
+            List<E> save = new LinkedList<>();
+            if (n < size) {
+                for (int i = 0; i < n; i++) {
+                    save.add(poll());
                 }
+            } else {
+                for (int i = 0; i < size; i++) {
+                    save.add(poll());
+                }
+                head = null;
+                size = 0;
             }
             return save;
         } catch (Exception e) {
@@ -386,31 +297,25 @@ public class LinkedList<E> extends AbstractList<E> {
 
     @Override
     public List<E> pollLastCollection(int n) {
-        LinkedNode<E> current = head;
-        LinkedList<E> save = new LinkedList<>();
-        for (int e = 0; e < size - n; e++) {
-            current = current.getNext();
-        }
-        LinkedNode<E> newTail = current;
-        for (int i = 0; i < n && current != null; i++) {
-            save.add(current.get());
-            current = current.getNext();
-            save.add(current.get());
-            size--;
-        }
-        if (size == 0) {
-            head = null;
-            tail = null;
-        } else {
-            if (size == 1) {
-                head = current;
-                tail = current;
+        try {
+            List<E> save = new LinkedList<>();
+            if (n < size) {
+                for (int i = 0; i < n; i++) {
+                    save.addFirst(pollLast());
+                }
             } else {
-                newTail.setNext(null);
-                this.tail = newTail;
+                for (int i = 0; i < size; i++) {
+                    save.addFirst(pollLast());
+                }
+                head = null;
+                tail = null;
+                size = 0;
             }
+            return save;
+        } catch (Exception e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
         }
-        return save;
+        return null;
     }
 
     @Override
@@ -443,66 +348,6 @@ public class LinkedList<E> extends AbstractList<E> {
     }
 
     @Override
-    public boolean remove(E[] array) {
-        try {
-            for (E element : array) {
-                remove(element);
-            }
-            return true;
-        } catch (Exception e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
-        }
-        return false;
-    }
-
-    @Override
-    public boolean remove(Collection<E> collection) {
-        try {
-            Iterator<E> iterator = collection.iterator();
-            while (iterator.hasNext()) {
-                E element = iterator.next();
-                remove(element);
-            }
-            return true;
-        } catch (Exception e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
-        }
-        return false;
-    }
-
-    @Override
-    public boolean remove(Predicate<E> filter) {
-        try {
-            LinkedNode<E> current = head;
-            LinkedNode<E> previous = null;
-            boolean elementsRemoved = false;
-            while (current != null) {
-                if (filter.test(current.get())) {
-                    if (previous == null) {
-                        head = current.getNext();
-                    } else {
-                        previous.setNext(current.getNext());
-                    }
-                    if (current == tail) {
-                        tail = previous;
-                        tail.setNext(null);
-                    }
-                    current = current.getNext();
-                    elementsRemoved = true;
-                    size--;
-                } else {
-                    previous = current;
-                    current = current.getNext();
-                }
-            }
-            return elementsRemoved;
-        } catch (Exception e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
-        }
-        return false;
-    }
-
-    @Override
     public boolean replace(E element, E newElement, Predicate<E> comparator) {
         try {
             LinkedNode<E> current = head;
@@ -515,34 +360,6 @@ public class LinkedList<E> extends AbstractList<E> {
                 current = current.getNext();
             }
             return elementReplaced;
-        } catch (Exception e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
-        }
-        return false;
-    }
-
-    @Override
-    public boolean replace(E[] array, E[] newArray, Predicate<E> comparator) {
-        try {
-            for (int i = 0; i < array.length; i++) {
-                replace(array[i], newArray[i], comparator);
-            }
-            return true;
-        } catch (Exception e) {
-            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
-        }
-        return false;
-    }
-
-    @Override
-    public boolean replace(Collection<E> collection, Collection<E> newCollection, Predicate<E> comparator) {
-        try {
-            Iterator<E> initialIterator = collection.iterator();
-            Iterator<E> finalIterator = newCollection.iterator();
-            while (initialIterator.hasNext() && finalIterator.hasNext()) {
-                replace(initialIterator.next(), finalIterator.next(), comparator);
-            }
-            return true;
         } catch (Exception e) {
             Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
         }
@@ -677,17 +494,6 @@ public class LinkedList<E> extends AbstractList<E> {
     }
 
     @Override
-    public E[] toArray() {
-        LinkedNode<E> current = head;
-        E[] toArray = (E[]) new Object[size];
-        for (int i = 0; i < size; i++) {
-            toArray[i] = current.get();
-            current = current.getNext();
-        }
-        return toArray;
-    }
-
-    @Override
     public boolean clear() {
         try {
             head.setNext(null);
@@ -702,46 +508,8 @@ public class LinkedList<E> extends AbstractList<E> {
     }
 
     @Override
-    public boolean contains(E element) {
-        boolean found = false;
-        LinkedNode<E> current = head;
-        for (int i = 0; i < size && !found; i++) {
-            if (current.get() == element) {
-                found = true;
-            }
-            current = current.getNext();
-        }
-        return found;
-    }
-
-    @Override
-    public boolean contains(E[] array) {
-        boolean found = true;
-        for (int i = 0; i < array.length && found; i++) {
-            found = contains(array[i]);
-        }
-        return found;
-    }
-
-    @Override
-    public boolean contains(Collection<E> collection) {
-        boolean found = true;
-        Iterator<E> iterator = collection.iterator();
-        while (iterator.hasNext() && found) {
-            E element = iterator.next();
-            found = contains(element);
-        }
-        return found;
-    }
-
-    @Override
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
-    @Override
     public boolean reverse() {
-        LinkedNode<E> current = this.head;
+        LinkedNode<E> current = head;
         Iterator<E> iterator = this.iterator();
         E[] reverso = (E[]) new Object[size];
         int i = 1;
@@ -755,16 +523,6 @@ public class LinkedList<E> extends AbstractList<E> {
             current = current.getNext();
         }
         return true;
-    }
-
-    @Override
-    public void forEach(Function<E, Void> action) {
-        LinkedNode<E> current = head;
-        for (int i = 0; i < size; i++) {
-            E element = (E) action.apply(current.get());
-            current.set(element);
-            current = current.getNext();
-        }
     }
 
     @Override

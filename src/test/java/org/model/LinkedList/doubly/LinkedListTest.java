@@ -2,27 +2,23 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/UnitTests/JUnit5TestClass.java to edit this template
  */
-package org.model.LinkedList.singly;
+package org.model.LinkedList.doubly;
 
-import java.util.Comparator;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
-import org.model.traintotest.TrainToTest;
-
 import org.model.util.iterator.Iterator;
-import org.model.util.list.List;
 
 /**
  *
- * @author PC 4060TI
+ * @author informatica
  */
 public class LinkedListTest {
-
+    
+   
     LinkedList<Integer> list;
-    TrainToTest train;
 
     @BeforeEach
     void setUp() {
@@ -39,20 +35,6 @@ public class LinkedListTest {
         int i = 0;
         for (Iterator<Integer> it = list.iterator(); it.hasNext();) {
             assertEquals(expected[i++], it.next());
-        }
-    }
-    
-    @Test
-    void testAddObjects() {
-        LinkedList<TrainToTest> list=new LinkedList<>();
-        assertTrue(list.add(new TrainToTest(23)));
-        assertTrue(list.add(new TrainToTest(30)));
-        assertTrue(list.add(new TrainToTest(20)));
-        assertEquals(3, list.size());
-        Object[] expected = {23, 30, 20};
-        int i = 0;
-        for (Iterator<TrainToTest> it = list.iterator(); it.hasNext();) {
-            assertEquals(expected[i++], it.next().getId());
         }
     }
 
@@ -664,5 +646,4 @@ public class LinkedListTest {
         list.clear();
         assertEquals(0, list.size());
     }
-
 }
