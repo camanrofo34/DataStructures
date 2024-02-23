@@ -8,6 +8,7 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.model.util.collection.AbstractCollection;
 import org.model.util.collection.Collection;
 import org.model.util.iterator.Iterator;
 
@@ -16,7 +17,7 @@ import org.model.util.iterator.Iterator;
  * @author admin
  * @param <E>
  */
-public abstract class AbstractList<E> implements List<E>, Collection<E>, Cloneable {
+public abstract class AbstractList<E> extends AbstractCollection<E> implements List<E>{
 
     protected int size;
 

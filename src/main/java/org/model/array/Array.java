@@ -21,6 +21,7 @@ import org.model.util.iterator.Iterator;
 public class Array<E> extends AbstractArray<E> {
 
     private E[] elements;
+    int size;
 
     /**
      *
@@ -28,6 +29,7 @@ public class Array<E> extends AbstractArray<E> {
      */
     public Array(int dimension) {
         this.elements = (E[]) new Object[dimension];
+        this.size=0;
     }
 
     public Array(E[] array) {
@@ -45,6 +47,7 @@ public class Array<E> extends AbstractArray<E> {
             for (int i = 0; i < elements.length; i++) {
                 if (elements[i] == null) {
                     elements[i] = element;
+                    size++;
                     return true;
                 }
             }
@@ -88,7 +91,6 @@ public class Array<E> extends AbstractArray<E> {
      * @param collection
      * @return
      */
-    //Arreglar y revisar
     @Override
     public boolean add(int index, Collection<E> collection) {
         try {
@@ -203,6 +205,7 @@ public class Array<E> extends AbstractArray<E> {
     public boolean remove(int index) {
         try {
             elements[index] = null;
+            size--;
             return true;
         } catch (Exception e) {
             Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
@@ -221,6 +224,7 @@ public class Array<E> extends AbstractArray<E> {
             for (int i = 0; i < elements.length; i++) {
                 if (elements[i] != null && filter.test(elements[i])) {
                     elements[i] = null;
+                    size--;
                 }
             }
             return true;
@@ -242,6 +246,7 @@ public class Array<E> extends AbstractArray<E> {
             if (to <= elements.length && from >= 0 && to > 0 && from < to) {
                 for (int i = from; i < to; i++) {
                     elements[i] = null;
+                    size--;
                 }
             }
             return true;
@@ -298,6 +303,7 @@ public class Array<E> extends AbstractArray<E> {
             for (int i = 0; i < elements.length; i++) {
                 elements[i] = null;
             }
+            size=0;
             return true;
         } catch (Exception e) {
             Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
@@ -370,12 +376,7 @@ public class Array<E> extends AbstractArray<E> {
      */
     @Override
     public boolean isEmpty() {
-        for (E element : elements) {
-            if (element != null) {
-                return false;
-            }
-        }
-        return true;
+        return size==0;
     }
 
     /**
@@ -403,7 +404,7 @@ public class Array<E> extends AbstractArray<E> {
      */
     @Override
     public int size() {
-        return elements.length;
+        return size;
     }
 
     /**

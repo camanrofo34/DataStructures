@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.model.traintotest.TrainToTest;
-
 import org.model.util.iterator.Iterator;
 import org.model.util.list.List;
 

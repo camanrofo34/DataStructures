@@ -464,19 +464,6 @@ public class LinkedList<E> extends AbstractList<E> {
     }
 
     @Override
-    public boolean contains(E element) {
-        boolean found = false;
-        LinkedNode<E> current = head;
-        for (int i = 0; i < size && !found; i++) {
-            if (current.get() == element) {
-                found = true;
-            }
-            current = current.getNext();
-        }
-        return found;
-    }
-
-    @Override
     public boolean reverse() {
         LinkedNode<E> current = head;
         Iterator<E> iterator = this.iterator();

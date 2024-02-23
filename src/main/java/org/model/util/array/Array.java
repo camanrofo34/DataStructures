@@ -27,10 +27,7 @@ public interface Array<E> {
      */
     public boolean add (int index, Collection<E> collection);
     
-    /**
-     * Moves all the elements to the left.
-     */
-    public void defragment();
+
     
     /**
      * Returns the element at the specified position in this collection.
@@ -74,13 +71,6 @@ public interface Array<E> {
      * @return 'true' if the element was removed successfully between the specified "from", inclusive, and "to", exclusive, otherwise 'false'.
      */    
     public boolean remove (int from, int to);
-
-    /**
-     * Resizes the array to the specified dimension. If the specified dimension is less than the current dimension, the array is truncated.
-     * @param newDimension
-     * @return 'true' if the array was re dimensioned successfully, otherwise false.
-     */    
-    public boolean dimension (int newDimension);
     
     /**
      * Replaces the element at the specified position in this collection with the specified element.

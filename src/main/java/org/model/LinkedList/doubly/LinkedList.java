@@ -295,20 +295,20 @@ public class LinkedList<E> extends AbstractList<E> {
 
     @Override
     public List<E> pollLastCollection(int n) {
-            List<E> save = new LinkedList<>();
-            if (n < size) {
-                for (int i = n - 1; i >= 0; i--) {
-                    save.addFirst(pollLast());
-                }
-            } else {
-                for (int i = 0; i < size; i++) {
-                    save.addFirst(pollLast());
-                }
-                head = null;
-                tail = null;
-                size = 0;
+        List<E> save = new LinkedList<>();
+        if (n < size) {
+            for (int i = n - 1; i >= 0; i--) {
+                save.addFirst(pollLast());
             }
-            return save;
+        } else {
+            for (int i = 0; i < size; i++) {
+                save.addFirst(pollLast());
+            }
+            head = null;
+            tail = null;
+            size = 0;
+        }
+        return save;
     }
 
     @Override
@@ -328,12 +328,12 @@ public class LinkedList<E> extends AbstractList<E> {
                 head.setPrevious(null);
             } else {
                 if (current == tail) {
-                previous.setNext(current.getNext());
-                tail = previous;
-                tail.setNext(null);
-            } else{
-                previous.setNext(current.getNext());
-                current.getNext().setPrevious(previous);
+                    previous.setNext(current.getNext());
+                    tail = previous;
+                    tail.setNext(null);
+                } else {
+                    previous.setNext(current.getNext());
+                    current.getNext().setPrevious(previous);
                 }
             }
             size--;
@@ -349,7 +349,7 @@ public class LinkedList<E> extends AbstractList<E> {
         try {
             LinkedNode<E> current = head;
             boolean elementReplaced = false;
-            while (current!=null) {
+            while (current != null) {
                 if (comparator.test(current.get()) && current.get().equals(element)) {
                     current.set(newElement);
                     elementReplaced = true;
@@ -443,7 +443,38 @@ public class LinkedList<E> extends AbstractList<E> {
 
     @Override
     public boolean sort(ToIntFunction<E> toInt) {
-        return false;
+        boolean swapped;
+        do {
+            swapped = false;
+            LinkedNode<E> current = head;
+            LinkedNode<E> next = head.getNext();
+            LinkedNode<E> previous = null;
+            while (next != null) {
+                int currentIntValue = toInt.applyAsInt(current.get());
+                int nextIntValue = toInt.applyAsInt(next.get());
+                if (currentIntValue > nextIntValue) {
+                    if (previous == null) {
+                        head = next;
+                    } else {
+                        previous.setNext(next);
+                    }
+                    current.setNext(next.getNext());
+                    next.setNext(current);
+                    next.setPrevious(previous);
+                    if (current.getNext() != null) {
+                        current.getNext().setPrevious(current);
+                    } else {
+                        tail = current;
+                    }
+                    swapped = true;
+                }
+                previous = current;
+                current = next;
+                next = next.getNext();
+            }
+        } while (swapped);
+        tail.setNext(null);
+        return true;
     }
 
     @Override
@@ -462,14 +493,14 @@ public class LinkedList<E> extends AbstractList<E> {
 
     @Override
     public boolean clear() {
-        try{
+        try {
             head.setNext(null);
             tail.setPrevious(null);
-            head=null;
-            tail=null;
-            size=0;
+            head = null;
+            tail = null;
+            size = 0;
             return true;
-        }catch (Exception e) {
+        } catch (Exception e) {
             Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
         }
         return false;

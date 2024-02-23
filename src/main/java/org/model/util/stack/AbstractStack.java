@@ -2,17 +2,14 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package org.model.util.array;
+package org.model.util.stack;
 
 import org.model.util.collection.AbstractCollection;
-import org.model.util.collection.Collection;
-
 
 /**
  *
- * @author PC 4060TI
- * @param <E>
+ * @author informatica
  */
-public abstract class AbstractArray<E> extends AbstractCollection<E> implements Array<E>, BufferArray {
-
+public abstract class AbstractStack<E> extends AbstractCollection <E> implements Stack<E>{
+    
 }
