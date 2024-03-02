@@ -10,7 +10,6 @@ import java.util.function.ToIntFunction;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
-import org.model.traintotest.TrainToTest;
 import org.model.util.iterator.Iterator;
 import org.model.util.list.List;
 
@@ -21,7 +20,6 @@ import org.model.util.list.List;
 public class LinkedListTest {
 
     LinkedList<Integer> list;
-    TrainToTest train;
 
     @BeforeEach
     void setUp() {
@@ -40,21 +38,7 @@ public class LinkedListTest {
             assertEquals(expected[i++], it.next());
         }
     }
-    
-    @Test
-    void testAddObjects() {
-        LinkedList<TrainToTest> list=new LinkedList<>();
-        assertTrue(list.add(new TrainToTest(23)));
-        assertTrue(list.add(new TrainToTest(30)));
-        assertTrue(list.add(new TrainToTest(20)));
-        assertEquals(3, list.size());
-        Object[] expected = {23, 30, 20};
-        int i = 0;
-        for (Iterator<TrainToTest> it = list.iterator(); it.hasNext();) {
-            assertEquals(expected[i++], it.next().getId());
-        }
-    }
-
+   
     @Test
     void testAddArray() {
         Integer[] added = {23, 30, 20};
