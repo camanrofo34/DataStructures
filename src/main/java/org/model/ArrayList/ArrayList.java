@@ -31,13 +31,20 @@ public class ArrayList<E> extends AbstractArrayList<E> {
     }
 
     public ArrayList() {
-        this.arrayList = (E[]) new Object[0];
+        this.arrayList = (E[]) new Object[10];
         this.size = 0;
     }
 
-    private void ensureCapacity() {
+    private void ensureMoreCapacity() {
         if (size == arrayList.length) {
             int newCapacity = arrayList.length * 2;
+            System.arraycopy(arrayList, 0, arrayList, 0, newCapacity);
+        }
+    }
+    
+    private void ensureLessCapacity() {
+        if (size == (arrayList.length/2)) {
+            int newCapacity = arrayList.length / 2;
             System.arraycopy(arrayList, 0, arrayList, 0, newCapacity);
         }
     }
@@ -128,7 +135,7 @@ public class ArrayList<E> extends AbstractArrayList<E> {
 
             @Override
             public boolean hasNext() {
-                return indice < arrayList.length;
+                return indice < size;
             }
 
             @Override
@@ -141,7 +148,7 @@ public class ArrayList<E> extends AbstractArrayList<E> {
     @Override
     public boolean add(E element) {
         try {
-            ensureCapacity();
+            ensureMoreCapacity();
             arrayList[size++] = element;
             return true;
         } catch (Exception e) {
@@ -180,8 +187,8 @@ public class ArrayList<E> extends AbstractArrayList<E> {
     @Override
     public boolean addFirst(E element) {
         try {
-            ensureCapacity();
-            System.arraycopy(arrayList, 0, arrayList, 1, size);
+            ensureMoreCapacity();
+            System.arraycopy(arrayList, 0, arrayList, 1, size++);
             arrayList[0] = element;
             return true;
         } catch (Exception e) {
@@ -193,8 +200,8 @@ public class ArrayList<E> extends AbstractArrayList<E> {
     @Override
     public boolean addFirst(E[] array) {
         try {
-            for (E element : array) {
-                addFirst(element);
+            for (int i=array.length-1; i>=0; i--) {
+                addFirst(array[i]);
             }
             return true;
         } catch (Exception e) {
@@ -206,6 +213,7 @@ public class ArrayList<E> extends AbstractArrayList<E> {
     @Override
     public boolean addFirst(Collection<E> collection) {
         try {
+            collection.reverse();
             Iterator<E> iterator = collection.iterator();
             while (iterator.hasNext()) {
                 addFirst(iterator.next());
@@ -293,9 +301,10 @@ public class ArrayList<E> extends AbstractArrayList<E> {
             n = size;
         }
         E[] array = (E[]) new Object[n];
-        for (int i = n - 1; i >= 0; i++) {
+        for (int i = n - 1; i >= 0; i--) {
             array[i] = pollLast();
         }
+        ensureLessCapacity();
         return array;
     }
 
@@ -358,12 +367,23 @@ public class ArrayList<E> extends AbstractArrayList<E> {
 
     @Override
     public boolean replace(E element, E newElement, Predicate<E> comparator) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        boolean replaced = false;
+        for (int i=0; i<size; i++){
+            if (arrayList[i].equals(element) && comparator.test(arrayList[i])){
+                arrayList[i] = newElement;
+                replaced = true;
+            }
+        }
+        return replaced;
     }
 
     @Override
     public boolean replace(E[] array, E[] newArray, Predicate<E> comparator) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        boolean replaced = true;
+        for (int i=0; i<array.length; i++){
+            if (!replace(array[i], newArray[i], comparator)) replaced = false;
+        }
+        return replaced;
     }
 
     @Override
