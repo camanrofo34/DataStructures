@@ -71,12 +71,12 @@ public class Queue<E> extends AbstractQueue<E>{
 
     @Override
     public E peek() {
-        return queue.peekLast();
+        return queue.peek();
     }
 
     @Override
     public E extract() {
-        return queue.pollLast();
+        return queue.poll();
     }
 
     @Override

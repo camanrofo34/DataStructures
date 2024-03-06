@@ -388,12 +388,18 @@ public class ArrayList<E> extends AbstractArrayList<E> {
 
     @Override
     public boolean replace(Collection<E> collection, Collection<E> newCollection, Predicate<E> comparator) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        boolean replaced = true;
+        Iterator<E> iterator = collection.iterator();
+        Iterator<E> newIterator = newCollection.iterator();
+        while(iterator.hasNext() && newIterator.hasNext()){
+            if (!replace(iterator.next(), newIterator.next(), comparator)) replaced = false;
+        }
+        return replaced;
     }
 
     @Override
     public boolean retain(E[] array) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return true;
     }
 
     @Override
@@ -403,7 +409,10 @@ public class ArrayList<E> extends AbstractArrayList<E> {
 
     @Override
     public boolean set(E index, E element) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        for (int i=0; i<size; i++){
+            if (arrayList[i].equals(index)) arrayList[i] = element;
+        }
+        return true;
     }
 
     @Override
@@ -443,7 +452,18 @@ public class ArrayList<E> extends AbstractArrayList<E> {
 
     @Override
     public int lastIndexOf(E element) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+                int index = -1;
+        try {
+            for (int i = size- 1; i >= 0 && index == -1; i--) {
+                if (arrayList[i] != null && arrayList[i].equals(element)) {
+                    index = i;
+                }
+            }
+            return index;
+        } catch (Exception e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
+        }
+        return index;
     }
 
     @Override

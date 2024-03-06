@@ -69,17 +69,17 @@ public class Stack<E> extends AbstractStack<E> {
 
     @Override
     public E peek() {
-        return stack.peek();
+        return stack.peekLast();
     }
 
     @Override
     public E pop() {
-        return stack.poll();
+        return stack.pollLast();
     }
 
     @Override
     public boolean push(E element) {
-        return stack.addFirst(element);
+        return stack.add(element);
     }
 
 }

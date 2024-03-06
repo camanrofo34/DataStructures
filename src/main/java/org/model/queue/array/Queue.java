@@ -16,9 +16,13 @@ import org.model.util.queue.AbstractQueue;
  */
 public class Queue<E> extends AbstractQueue<E> {
     Array<E> queue;
+    int head;
+    int tail;
 
     public Queue(int dimension) {
         this.queue = new Array<>(dimension);
+        this.head=0;
+        this.tail=0;
     }
     
     @Override
@@ -68,14 +72,13 @@ public class Queue<E> extends AbstractQueue<E> {
 
     @Override
     public E peek() {
-        return queue.get(0);
+        return queue.get(head);
     }
 
     @Override
     public E extract() {
         E element = peek();
-        queue.remove(0);
-        queue.defragment();
+        queue.remove(head++);
         return element;
     }
 
@@ -83,5 +86,5 @@ public class Queue<E> extends AbstractQueue<E> {
     public boolean insert(E element) {
         return queue.add(element);
     }
-    
+    //Preguntar por el system arrayCopy
 }

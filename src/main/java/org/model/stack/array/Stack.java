@@ -18,7 +18,7 @@ public class Stack<E> extends AbstractStack<E> {
     Array<E> stack;
     
     public Stack(int dimension){
-        stack=new Array<E>(dimension);
+        stack=new Array<>(dimension);
     }
 
     @Override
