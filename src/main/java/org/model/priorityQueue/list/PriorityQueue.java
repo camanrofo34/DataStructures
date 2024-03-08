@@ -123,24 +123,32 @@ public class PriorityQueue<E> extends AbstractPriorityQueue<E> {
     @Override
     public boolean insert(E element) {
         prioridad.get(prioridades - 1).insert(element);
+        size++;
         return true;
     }
 
     @Override
     public boolean insert(int index, E element) {
         prioridad.get(index).insert(element);
+        size++;
         return true;
     }
 
     @Override
     public E peek() {
-        return prioridad.get(0).peek();
+        for (int i = 0; i < prioridades; i++) {
+            if (prioridad.get(i).size() != 0) {
+                return prioridad.get(i).peek();
+            }
+        }
+        return null;
     }
 
     @Override
     public E extract() {
         for (int i = 0; i < prioridades; i++) {
             if (prioridad.get(i).size() != 0) {
+                size--;
                 return prioridad.get(i).extract();
             }
         }

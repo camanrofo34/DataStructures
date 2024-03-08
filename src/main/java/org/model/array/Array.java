@@ -74,11 +74,13 @@ public class Array<E> extends AbstractArray<E> {
             if (restSpaces >= array.length) {
                 for (int i = index; e < array.length; i++) {
                     elements[i] = array[e++];
+                    size++;
                 }
                 return true;
             } else {
                 for (int i = index; e < elements.length; i++) {
                     elements[i] = array[e++];
+                    size++;
                 }
                 return false;
             }
@@ -104,12 +106,14 @@ public class Array<E> extends AbstractArray<E> {
                 for (int i = index; e < collection.size(); i++) {
                     elements[i] = collectionIterator.next();
                     e++;
+                    size++;
                 }
                 return true;
             } else {
                 for (int i = index; e < elements.length; i++) {
                     elements[i] = collectionIterator.next();
                     e++;
+                    size++;
                 }
                 return false;
             }
@@ -389,10 +393,10 @@ public class Array<E> extends AbstractArray<E> {
     @Override
     public boolean reverse() {
         try {
-            for (int i = 0; i < elements.length / 2; i++) {
+            for (int i = 0; i < size / 2; i++) {
                 E temp = elements[i];
-                elements[i] = elements[elements.length - i - 1];
-                elements[elements.length - i - 1] = temp;
+                elements[i] = elements[size - i - 1];
+                elements[size - i - 1] = temp;
             }
             return true;
         } catch (Exception e) {
@@ -421,7 +425,7 @@ public class Array<E> extends AbstractArray<E> {
 
             @Override
             public boolean hasNext() {
-                return indice < elements.length;
+                return indice < size;
             }
 
             @Override
@@ -437,8 +441,8 @@ public class Array<E> extends AbstractArray<E> {
      */
     @Override
     public void forEach(Function<E, Void> action) {
-        for (E element : elements) {
-            action.apply(element);
+        for (int i = 0; i<size; i++){
+            action.apply(elements[i]);
         }
     }
 

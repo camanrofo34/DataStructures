@@ -16,10 +16,12 @@ import org.model.util.queue.AbstractQueue;
  */
 public class Queue<E> extends AbstractQueue<E> {
     Array<E> queue;
+    int dimension;
     int head;
     int tail;
 
     public Queue(int dimension) {
+        this.dimension = dimension;
         this.queue = new Array<>(dimension);
         this.head=0;
         this.tail=0;
@@ -67,7 +69,18 @@ public class Queue<E> extends AbstractQueue<E> {
 
     @Override
     public Iterator<E> iterator() {
-        return queue.iterator();
+        return new Iterator<>(){
+            int count = 0;
+            @Override
+            public boolean hasNext() {
+                return count++<queue.size();
+            }
+
+            @Override
+            public E next() {
+                if (head<dimension) return 
+            }   
+        };
     }
 
     @Override
@@ -84,7 +97,8 @@ public class Queue<E> extends AbstractQueue<E> {
 
     @Override
     public boolean insert(E element) {
-        return queue.add(element);
+        queue.set(tail++, element);
+        tail = tail%dimension;
+        return true;
     }
-    //Preguntar por el system arrayCopy
 }
