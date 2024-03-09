@@ -12,10 +12,6 @@ import org.model.util.collection.Collection;
 import org.model.util.iterator.Iterator;
 import org.model.util.queue.AbstractPriorityQueue;
 
-/**
- *
- * @author informatica
- */
 public class PriorityQueue<E> extends AbstractPriorityQueue<E> {
 
     Array<Queue<E>> prioridad;
@@ -36,6 +32,7 @@ public class PriorityQueue<E> extends AbstractPriorityQueue<E> {
         for (int i = 0; i < prioridades; i++) {
             prioridad.get(i).clear();
         }
+        size = 0;
         return true;
     }
 
@@ -102,6 +99,7 @@ public class PriorityQueue<E> extends AbstractPriorityQueue<E> {
         return new Iterator<E>() {
             int i = 0;
             Iterator<E> iteradorElementos = prioridad.get(i).iterator();
+
             @Override
             public boolean hasNext() {
                 while (!iteradorElementos.hasNext() && i < prioridad.size() - 1) {
@@ -109,6 +107,7 @@ public class PriorityQueue<E> extends AbstractPriorityQueue<E> {
                 }
                 return iteradorElementos.hasNext();
             }
+
             @Override
             public E next() {
                 if (!hasNext()) {
@@ -123,24 +122,32 @@ public class PriorityQueue<E> extends AbstractPriorityQueue<E> {
     @Override
     public boolean insert(E element) {
         prioridad.get(prioridades - 1).insert(element);
+        size++;
         return true;
     }
 
     @Override
     public boolean insert(int index, E element) {
         prioridad.get(index).insert(element);
+        size++;
         return true;
     }
 
     @Override
     public E peek() {
-        return prioridad.get(0).peek();
+        for (int i = 0; i < prioridades; i++) {
+            if (prioridad.get(i).size() != 0) {
+                return prioridad.get(i).peek();
+            }
+        }
+        return null;
     }
 
     @Override
     public E extract() {
         for (int i = 0; i < prioridades; i++) {
             if (prioridad.get(i).size() != 0) {
+                size--;
                 return prioridad.get(i).extract();
             }
         }

@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package org.model.queue.array;
 
 import java.util.function.Function;
@@ -15,16 +11,19 @@ import org.model.util.queue.AbstractQueue;
  * @author admin
  */
 public class Queue<E> extends AbstractQueue<E> {
+
     Array<E> queue;
+    int dimension;
     int head;
     int tail;
 
     public Queue(int dimension) {
+        this.dimension = dimension;
         this.queue = new Array<>(dimension);
-        this.head=0;
-        this.tail=0;
+        this.head = 0;
+        this.tail = 0;
     }
-    
+
     @Override
     public boolean clear() {
         return queue.clear();
@@ -67,7 +66,22 @@ public class Queue<E> extends AbstractQueue<E> {
 
     @Override
     public Iterator<E> iterator() {
-        return queue.iterator();
+        return new Iterator<>() {
+            int count = 0;
+            int apuntador = head;
+            @Override
+            public boolean hasNext() {
+                return count++ < queue.size();
+            }
+
+            @Override
+            public E next() {
+                if (apuntador >= dimension) {
+                    apuntador=0;
+                }
+                return queue.get(apuntador++);
+            }
+        };
     }
 
     @Override
@@ -77,14 +91,20 @@ public class Queue<E> extends AbstractQueue<E> {
 
     @Override
     public E extract() {
-        E element = peek();
-        queue.remove(head++);
-        return element;
+        E element = queue.get(head);
+        if(queue.remove(head++) && element != null){
+            head %= dimension;
+            return element;
+        }
+        return null;
     }
 
     @Override
     public boolean insert(E element) {
-        return queue.add(element);
+        if (queue.add(element)) {
+            tail = (tail+1)%dimension;
+            return true;
+        }
+        return false;
     }
-    //Preguntar por el system arrayCopy
 }

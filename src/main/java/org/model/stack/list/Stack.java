@@ -64,7 +64,7 @@ public class Stack<E> extends AbstractStack<E> {
 
     @Override
     public Iterator<E> iterator() {
-            return stack.iterator();
+        return stack.iterator();
     }
 
     @Override
