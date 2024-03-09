@@ -1,3 +1,4 @@
+
 package org.model.queue.array;
 
 import java.util.function.Function;
@@ -6,10 +7,6 @@ import org.model.util.collection.Collection;
 import org.model.util.iterator.Iterator;
 import org.model.util.queue.AbstractQueue;
 
-/**
- *
- * @author admin
- */
 public class Queue<E> extends AbstractQueue<E> {
 
     Array<E> queue;
