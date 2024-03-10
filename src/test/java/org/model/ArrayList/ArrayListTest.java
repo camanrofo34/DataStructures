@@ -376,7 +376,8 @@ public class ArrayListTest {
         list.add(20);
         Object[] expected = {23, 20};
         assertEquals(3, list.size());
-        assertTrue(list.remove(30));
+        Integer borrar=30;
+        assertTrue(list.remove(borrar));
         assertEquals(2, list.size());
         int i = 0;
         for (Iterator<Integer> it = list.iterator(); it.hasNext();) {
@@ -388,9 +389,10 @@ public class ArrayListTest {
         list.add(23);
         list.add(30);
         list.add(20);
+        Integer valor = 20;
         Object[] expected = {23, 30};
         assertEquals(3, list.size());
-        assertTrue(list.remove(20));
+        assertTrue(list.remove(valor));
         assertEquals(2, list.size());
         int i = 0;
         for (Iterator<Integer> it = list.iterator(); it.hasNext();) {
@@ -633,5 +635,77 @@ public class ArrayListTest {
         assertEquals(0, list.size());
     }
 
+    @Test
+    void testAddAtIndexWithArray() {
+        Integer[] newArray = {10, 20, 30};
+        assertTrue(list.add(1, newArray));
+    }
+
+    @Test
+    void testGet() {
+        list.add(1);
+        list.add(2);
+        assertEquals(1, list.get(0));
+        assertNull(list.get(2));
+    }
+
+    @Test
+    void testIndexOf() {
+        list.add(1);
+        list.add(2);
+        assertEquals(0, list.indexOf(1));
+        assertEquals(-1, list.indexOf(3));
+    }
+
+    @Test
+    void testLastIndexOf() {
+        list.add(1);
+        list.add(2);
+        list.add(1);
+        assertEquals(2, list.lastIndexOf(1));
+        assertEquals(-1, list.lastIndexOf(3));
+    }
+
+    @Test
+    void testRemoveByIndex() {
+        list.add(1);
+        list.add(2);
+        assertTrue(list.remove(1));
+        assertNull(list.get(1));
+    }
+
+    @Test
+    void testRemoveByFilter() {
+        list.add(1);
+        list.add(2);
+        assertTrue(list.remove(x -> x == 2));
+        assertNull(list.get(1));
+    }
+
+    @Test
+    void testRemoveByRange() {
+        list.add(1);
+        list.add(2);
+        list.add(3);
+        assertTrue(list.remove(1, 3));
+    }
+
+
+    @Test
+    void testSet() {
+        list.add(1);
+        int posicion = 0;
+        Integer elemento = 5;
+        assertTrue(list.set(posicion, elemento));
+        assertEquals(5, list.get(0));
+    }
+
+
+    @Test
+    void testContainsElement() {
+        list.add(1);
+        assertTrue(list.contains(1));
+        assertFalse(list.contains(2));
+    }
     
 }

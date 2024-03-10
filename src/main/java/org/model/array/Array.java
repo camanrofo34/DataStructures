@@ -213,6 +213,7 @@ public class Array<E> extends AbstractArray<E> {
         try {
             elements[index] = null;
             size--;
+            defragment();
             return true;
         } catch (Exception e) {
             Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
@@ -234,6 +235,7 @@ public class Array<E> extends AbstractArray<E> {
                     size--;
                 }
             }
+            defragment();
             return true;
         } catch (Exception e) {
             Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
@@ -256,6 +258,7 @@ public class Array<E> extends AbstractArray<E> {
                     size--;
                 }
             }
+            defragment();
             return true;
         } catch (Exception e) {
             Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);

@@ -41,9 +41,9 @@ public class ArrayList<E> extends AbstractArrayList<E> {
             System.arraycopy(arrayList, 0, arrayList, 0, newCapacity);
         }
     }
-    
+
     private void ensureLessCapacity() {
-        if (size == (arrayList.length/2)) {
+        if (size == (arrayList.length / 2)) {
             int newCapacity = arrayList.length / 2;
             System.arraycopy(arrayList, 0, arrayList, 0, newCapacity);
         }
@@ -66,8 +66,8 @@ public class ArrayList<E> extends AbstractArrayList<E> {
 
     @Override
     public boolean contains(E element) {
-        for (E element1 : arrayList) {
-            if (element1.equals(element)) {
+        for (int i = 0; i < size; i++) {
+            if (arrayList[i].equals(element)) {
                 return true;
             }
         }
@@ -104,10 +104,10 @@ public class ArrayList<E> extends AbstractArrayList<E> {
     @Override
     public boolean reverse() {
         try {
-            for (int i = 0; i < arrayList.length / 2; i++) {
+            for (int i = 0; i < size / 2; i++) {
                 E temp = arrayList[i];
-                arrayList[i] = arrayList[arrayList.length - i - 1];
-                arrayList[arrayList.length - i - 1] = temp;
+                arrayList[i] = arrayList[size - i - 1];
+                arrayList[size - i - 1] = temp;
             }
             return true;
         } catch (Exception e) {
@@ -200,7 +200,7 @@ public class ArrayList<E> extends AbstractArrayList<E> {
     @Override
     public boolean addFirst(E[] array) {
         try {
-            for (int i=array.length-1; i>=0; i--) {
+            for (int i = array.length - 1; i >= 0; i--) {
                 addFirst(array[i]);
             }
             return true;
@@ -336,30 +336,34 @@ public class ArrayList<E> extends AbstractArrayList<E> {
 
     @Override
     public boolean remove(E[] array) {
-        boolean removed=true;
-        for (E element: array){
-            if (!remove(element)) removed=false;
+        boolean removed = true;
+        for (E element : array) {
+            if (!remove(element)) {
+                removed = false;
+            }
         }
         return removed;
     }
 
     @Override
     public boolean remove(Collection<E> collection) {
-        boolean removed=true;
+        boolean removed = true;
         Iterator<E> iterator = collection.iterator();
-        while(iterator.hasNext()){
-            if (!remove(iterator.next())) removed=false;
+        while (iterator.hasNext()) {
+            if (!remove(iterator.next())) {
+                removed = false;
+            }
         }
         return removed;
     }
 
     @Override
     public boolean remove(Predicate<E> filter) {
-        boolean removed=false;
-        for (int i=0; i<size; i++){
-            if(filter.test(arrayList[i])) {  
+        boolean removed = false;
+        for (int i = 0; i < size; i++) {
+            if (filter.test(arrayList[i])) {
                 remove(arrayList[i]);
-                removed=true;
+                removed = true;
             }
         }
         return removed;
@@ -368,8 +372,8 @@ public class ArrayList<E> extends AbstractArrayList<E> {
     @Override
     public boolean replace(E element, E newElement, Predicate<E> comparator) {
         boolean replaced = false;
-        for (int i=0; i<size; i++){
-            if (arrayList[i].equals(element) && comparator.test(arrayList[i])){
+        for (int i = 0; i < size; i++) {
+            if (arrayList[i].equals(element) && comparator.test(arrayList[i])) {
                 arrayList[i] = newElement;
                 replaced = true;
             }
@@ -380,8 +384,10 @@ public class ArrayList<E> extends AbstractArrayList<E> {
     @Override
     public boolean replace(E[] array, E[] newArray, Predicate<E> comparator) {
         boolean replaced = true;
-        for (int i=0; i<array.length; i++){
-            if (!replace(array[i], newArray[i], comparator)) replaced = false;
+        for (int i = 0; i < array.length; i++) {
+            if (!replace(array[i], newArray[i], comparator)) {
+                replaced = false;
+            }
         }
         return replaced;
     }
@@ -391,70 +397,160 @@ public class ArrayList<E> extends AbstractArrayList<E> {
         boolean replaced = true;
         Iterator<E> iterator = collection.iterator();
         Iterator<E> newIterator = newCollection.iterator();
-        while(iterator.hasNext() && newIterator.hasNext()){
-            if (!replace(iterator.next(), newIterator.next(), comparator)) replaced = false;
+        while (iterator.hasNext() && newIterator.hasNext()) {
+            if (!replace(iterator.next(), newIterator.next(), comparator)) {
+                replaced = false;
+            }
         }
         return replaced;
     }
 
     @Override
     public boolean retain(E[] array) {
-        return true;
+        try {
+            for (int i = 0; i < size; i++) {
+                boolean elementContained = false;
+                for (E arrayElement : array) {
+                    if (arrayElement.equals(arrayList[i])) {
+                        elementContained = true;
+                    }
+                }
+                if (!elementContained) {
+                    remove(arrayList[i]);
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
+        }
+        return false;
     }
 
     @Override
     public boolean retain(Collection<E> collection) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            for (int i = 0; i < size; i++) {
+                if (!collection.contains(arrayList[i])) {
+                    remove(arrayList[i]);
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
+        }
+        return false;
     }
 
     @Override
     public boolean set(E index, E element) {
-        for (int i=0; i<size; i++){
-            if (arrayList[i].equals(index)) arrayList[i] = element;
+        for (int i = 0; i < size; i++) {
+            if (arrayList[i].equals(index)) {
+                arrayList[i] = element;
+            }
         }
         return true;
     }
 
     @Override
     public boolean sort(ToIntFunction<E> toInt) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        int i, j;
+        E temp;
+        boolean swapped;
+        for (i = 0; i < size - 1; i++) {
+            swapped = false;
+            for (j = 0; j < size - i - 1; j++) {
+                if (toInt.applyAsInt(arrayList[j]) > toInt.applyAsInt(arrayList[j + 1])) {
+                    temp = arrayList[j];
+                    arrayList[j] = arrayList[j + 1];
+                    arrayList[j + 1] = temp;
+                    swapped = true;
+                }
+            }
+            if (swapped == false) {
+                break;
+            }
+        }
+        return true;
     }
 
     @Override
     public List<E> subList(E from, E to) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        List<E> list = new LinkedList<>();
+        int i = indexOf(from);
+        int e = indexOf(to);
+        while (i < e) {
+            list.add(arrayList[i++]);
+        }
+        return list;
     }
 
     @Override
     public E[] toArray() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        return arrayList;
     }
 
     @Override
     public boolean add(int index, E[] array) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            int e = 0;
+            for (int i = index; i < array.length; i++) {
+                arrayList[i] = array[e++];
+                ensureMoreCapacity();
+            }
+            return true;
+        } catch (Exception e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
+        }
+        return false;
     }
 
     @Override
     public boolean add(int index, Collection<E> collection) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            int e = index;
+            Iterator<E> iterator = collection.iterator();
+            while (iterator.hasNext()) {
+                arrayList[e++] = iterator.next();
+                ensureMoreCapacity();
+            }
+            return true;
+        } catch (Exception e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
+        }
+        return false;
     }
 
     @Override
     public E get(int index) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            return arrayList[index];
+        } catch (Exception e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
+        }
+        return null;
     }
 
     @Override
     public int indexOf(E element) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        int index = -1;
+        try {
+            for (int i = 0; i < arrayList.length && index == -1; i++) {
+                if (arrayList[i] != null && arrayList[i].equals(element)) {
+                    index = i;
+                }
+            }
+            return index;
+        } catch (Exception e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
+        }
+        return index;
     }
 
     @Override
     public int lastIndexOf(E element) {
-                int index = -1;
+        int index = -1;
         try {
-            for (int i = size- 1; i >= 0 && index == -1; i--) {
+            for (int i = size - 1; i >= 0 && index == -1; i--) {
                 if (arrayList[i] != null && arrayList[i].equals(element)) {
                     index = i;
                 }
@@ -468,17 +564,40 @@ public class ArrayList<E> extends AbstractArrayList<E> {
 
     @Override
     public boolean remove(int index) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            System.arraycopy(arrayList, index + 1, arrayList, index, size - index - 1);
+            arrayList[--size] = null;
+            return true;
+        } catch (Exception e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
+        }
+        return false;
     }
 
     @Override
     public boolean remove(int from, int to) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            for (int i = to - 1; i >= from; i--) {
+                if (!remove(i)) {
+                    return false;
+                }
+            }
+            return true;
+        } catch (Exception e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
+        }
+        return false;
     }
 
     @Override
     public boolean set(int index, E element) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try {
+            arrayList[index] = element;
+            return true;
+        } catch (Exception e) {
+            Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
+        }
+        return false;
     }
 
 }
