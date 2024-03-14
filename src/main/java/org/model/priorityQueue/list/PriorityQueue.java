@@ -74,7 +74,6 @@ public class PriorityQueue<E> extends AbstractPriorityQueue<E> {
 
     @Override
     public boolean reverse() {
-
         for (int i = 0; i < prioridades; i++) {
             prioridad.get(i).reverse();
         }
@@ -121,16 +120,22 @@ public class PriorityQueue<E> extends AbstractPriorityQueue<E> {
 
     @Override
     public boolean insert(E element) {
-        prioridad.get(prioridades - 1).insert(element);
-        size++;
-        return true;
+        boolean insert = prioridad.get(prioridades - 1).insert(element);
+        if (insert) {
+            size++;
+            return true;
+        }
+        return false;
     }
 
     @Override
     public boolean insert(int index, E element) {
-        prioridad.get(index).insert(element);
-        size++;
-        return true;
+        boolean insert = prioridad.get(index).insert(element);
+        if (insert) {
+            size++;
+            return true;
+        }
+        return false;
     }
 
     @Override
