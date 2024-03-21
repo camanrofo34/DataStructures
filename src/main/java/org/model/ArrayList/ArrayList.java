@@ -34,6 +34,11 @@ public class ArrayList<E> extends AbstractArrayList<E> {
         this.arrayList = (E[]) new Object[10];
         this.size = 0;
     }
+    
+    public ArrayList(E[] elements){
+        this.arrayList = elements;
+        this.size = elements.length;
+    }
 
     private void ensureMoreCapacity() {
         if (size == arrayList.length) {

@@ -248,10 +248,9 @@ public class LinkedList<E> extends AbstractList<E> {
                     save[i] = pollLast();
                 }
             } else {
-                System.arraycopy(toArray(), 0, save, 0, size);
-                head = null;
-                tail = null;
-                size = 0;
+                for (int i = size()-1; i >= 0; i--) {
+                    save[i] = pollLast();
+                }
             }
             return save;
         } catch (Exception e) {

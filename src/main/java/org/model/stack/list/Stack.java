@@ -5,7 +5,7 @@
 package org.model.stack.list;
 
 import java.util.function.Function;
-import org.model.LinkedList.singly.LinkedList;
+import org.model.LinkedList.doubly.LinkedList;
 import org.model.util.collection.Collection;
 import org.model.util.iterator.Iterator;
 import org.model.util.stack.AbstractStack;
