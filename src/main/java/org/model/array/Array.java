@@ -37,6 +37,7 @@ public class Array<E> extends AbstractArray<E> {
 
     public Array(E[] array) {
         this.elements = array;
+        this.size = array.length;
     }
 
     /**

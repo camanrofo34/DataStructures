@@ -31,7 +31,7 @@ public class ArrayList<E> extends AbstractArrayList<E> {
     }
 
     public ArrayList() {
-        this.arrayList = (E[]) new Object[10];
+        this.arrayList = (E[]) new Object[25];
         this.size = 0;
     }
     

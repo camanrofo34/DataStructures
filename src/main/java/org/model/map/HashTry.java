@@ -15,16 +15,14 @@ import org.model.util.iterator.Iterator;
 public class HashTry {
     
     public static void main(String[] args) {
-        int dimensionTabla = 10000; // Tamaño de la tabla hash (primo para una mejor dispersión)
+        int dimensionTabla = 10000;
         HashTable<String> hashTable = new HashTable<>(dimensionTabla);
 
-        // Generar 10,000 valores aleatorios
         for (int i = 0; i < 10000; i++) {
             String clave = generarClaveAleatoria();
             hashTable.put(clave, "Valor" + i);
         }
 
-        // Contar colisiones
         int colisiones = contarColisiones(hashTable);
         System.out.println("Número de colisiones: " + colisiones);
     }
@@ -40,8 +38,7 @@ public class HashTry {
         }
         return sb.toString();
     }
-
-    // Método para contar colisiones en la tabla hash
+    
     private static <E> int contarColisiones(HashTable<E> hashTable) {
         int colisiones = 0;
         Iterator<LinkedList<E>> iterator = hashTable.tabla.iterator();

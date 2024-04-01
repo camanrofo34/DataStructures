@@ -64,8 +64,8 @@ public class HashTable<E> extends AbstractHashTable<E> {
         }
         return Math.abs(hash) % oddNearest;
     }
-
 //4225, 4204, 4273
+    
 //Hashing por division
 //    private int dispersionFunction(String key) {
 //        int hash = 0;
