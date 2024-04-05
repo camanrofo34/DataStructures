@@ -52,20 +52,41 @@ public class HashTable<E> extends AbstractHashTable<E> {
 //        return Math.abs(hash) % oddNearest; 
 //    }
 //4300 4302 4289
-
-
-
-    
 //Desplazamiento y resta
+//    private int dispersionFunction(String key) {
+//        int hash = 0;
+//        for (int ii = 0; ii < key.length(); ii++) {
+//            hash = (hash << 5) - hash + key.charAt(ii); // Utilizando una combinación de desplazamiento y resta
+//        }
+//        return Math.abs(hash) % oddNearest;
+//    }
+//4225, 4204, 4273
+//Cuadrados medios
     private int dispersionFunction(String key) {
         int hash = 0;
+        int square;
+        int numDigits = 4; // Número de dígitos que deseamos en nuestro hash
+
         for (int ii = 0; ii < key.length(); ii++) {
             hash = (hash << 5) - hash + key.charAt(ii); // Utilizando una combinación de desplazamiento y resta
         }
-        return Math.abs(hash) % oddNearest;
+
+        // Calcular el cuadrado del valor generado
+        square = hash * hash;
+
+        // Convertir el cuadrado en una cadena para obtener los dígitos centrales
+        String squareStr = Integer.toString(square);
+
+        // Calcular el índice central
+        int startIndex = (squareStr.length() - numDigits) / 2;
+
+        // Tomar los dígitos centrales y convertirlos en un número
+        int hashValue = Integer.parseInt(squareStr.substring(startIndex, startIndex + numDigits));
+
+        // Devolver el valor de dispersión
+        return hashValue % oddNearest;
     }
-//4225, 4204, 4273
-    
+
 //Hashing por division
 //    private int dispersionFunction(String key) {
 //        int hash = 0;
@@ -75,8 +96,6 @@ public class HashTable<E> extends AbstractHashTable<E> {
 //        return hash % oddNearest; // Tomamos el residuo para obtener el índice
 //    }
 // 9170 9164 9153
-
-
     private void previousOddNumber() {
         boolean worth = true;
         while (worth) {
