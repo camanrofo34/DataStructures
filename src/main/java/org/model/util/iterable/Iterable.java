@@ -2,9 +2,10 @@ package org.model.util.iterable;
 
 import org.model.util.iterator.Iterator;
 
+import java.io.Serializable;
 import java.util.function.Function;
 
-public interface Iterable<E> {
+public interface Iterable<E> extends Serializable {
     /**
      * For each element in the iterator, executes the specified action.
      * @param action

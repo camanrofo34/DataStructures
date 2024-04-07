@@ -4,11 +4,15 @@
  */
 package org.model.util.queue;
 
+import org.model.util.collection.Collection;
+
+import java.io.Serializable;
+
 /**
  *
  * @author admin
  */
-public interface Queue<E> {
+public interface Queue<E> extends Serializable, Collection<E> {
     public E peek();
     public E extract();
     public boolean insert(E element);

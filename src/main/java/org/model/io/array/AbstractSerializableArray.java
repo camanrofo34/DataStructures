@@ -14,7 +14,7 @@ import org.model.array.Array;
  */
 public abstract class AbstractSerializableArray<E extends Serializable> extends Array<E> implements Serializable{ 
 
-    protected static final long serialVersonUID = 1L;
+    protected static final long serialVersionUID = 1L;
     
     protected AbstractSerializableArray(int dimension) {
         super(dimension);

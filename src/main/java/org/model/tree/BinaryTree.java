@@ -85,34 +85,34 @@ public class BinaryTree<E> {
             while (!nodes.isEmpty()) {
                 Node<E> node = nodes.extract();
                 list.add(node.getRoot());
-                if (node.getLeft() != null){
+                if (node.getLeft() != null) {
                     auxiliar.insert(node.getLeft());
                 }
-                if (node.getRight() != null){
+                if (node.getRight() != null) {
                     auxiliar.insert(node.getRight());
                 }
             }
             depthSearch(auxiliar, list);
         }
     }
-    
-    public int height (){
+
+    public int height() {
         this.height = 0;
         Queue<Node<E>> auxiliar = new Queue<>();
         auxiliar.insert(root);
         countHeight(auxiliar);
         return height;
     }
-    
-    private void countHeight(Queue<Node<E>> nodes){
+
+    private void countHeight(Queue<Node<E>> nodes) {
         if (!nodes.isEmpty()) {
             Queue<Node<E>> auxiliar = new Queue<>();
             while (!nodes.isEmpty()) {
                 Node<E> node = nodes.extract();
-                if (node.getLeft() != null){
+                if (node.getLeft() != null) {
                     auxiliar.insert(node.getLeft());
                 }
-                if (node.getRight() != null){
+                if (node.getRight() != null) {
                     auxiliar.insert(node.getRight());
                 }
             }
@@ -120,4 +120,66 @@ public class BinaryTree<E> {
             countHeight(auxiliar);
         }
     }
+
+    public boolean isCompleteTree() {
+        return isComplete(root);
+    }
+
+    private boolean isComplete(Node<E> node) {
+        if (node == null) {
+            return true;
+        }
+        int branchCount = branchCount(node);
+        if (branchCount == 1) {
+            return false;
+        }
+        return isComplete(node.getLeft()) && isComplete(node.getRight());
+    }
+
+    private int branchCount(Node<E> node) {
+        int i = 0;
+        if (node.getLeft() != null) {
+            i++;
+        }
+        if (node.getRight() != null) {
+            i++;
+        }
+        return i;
+    }
+
+    public void depthInsert(E element) {
+        if (root == null) {
+            root = new Node<>(element);
+        } else {
+            Queue<Node<E>> auxiliar = new Queue<>();
+            auxiliar.insert(root);
+            depthInsertR(auxiliar, element);
+        }
+
+    }
+
+    private void depthInsertR(Queue<Node<E>> nodes, E element) {
+        boolean agregado = false;
+        Queue<Node<E>> auxiliar = new Queue<>();
+        while (!nodes.isEmpty() && !agregado) {
+            Node<E> node = nodes.extract();
+            if (node.getLeft() == null && !agregado) {
+                node.setLeft(new Node<>(element));
+                agregado = true;
+            } else {
+                auxiliar.insert(node.getLeft());
+            }
+            if (node.getRight() == null && !agregado) {
+                node.setRight(new Node<>(element));
+                agregado = true;
+            }
+            {
+                auxiliar.insert(node.getRight());
+            }
+        }
+        if (!agregado) {
+            depthInsertR(auxiliar, element);
+        }
+    }
+
 }

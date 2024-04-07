@@ -13,6 +13,6 @@ import org.model.util.collection.Collection;
  * @author PC 4060TI
  * @param <E>
  */
-public abstract class AbstractArray<E> extends AbstractCollection<E> implements Array<E>, BufferArray {
+public abstract class AbstractArray<E> implements Array<E>, BufferArray {
 
 }

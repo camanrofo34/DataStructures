@@ -4,11 +4,13 @@
  */
 package org.model.util.queue;
 
+import java.io.Serializable;
+
 /**
  *
  * @author informatica
  */
-public interface PriorityQueue<E> extends Queue<E>{
+public interface PriorityQueue<E> extends Queue<E>, Serializable {
     public boolean insert(E element);
     public boolean insert (int index, E element);
     

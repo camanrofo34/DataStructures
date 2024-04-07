@@ -14,7 +14,7 @@ import org.model.util.iterator.Iterator;
 public class BinTreeTry {
 
     public static void main(String[] args) {
-        Node<String> root = new Node<>("+", new Node<>("*", new Node<>("a"), new Node<>("b")), new Node<>("/", new Node<>("c", new Node<>("h"), null), new Node<>("d")));
+        Node<String> root = new Node<>("+", new Node<>("*", new Node<>("a"), new Node<>("b")), new Node<>("/", new Node<>("c", new Node<>("z"), null), new Node<>("d")));
 
         BinaryTree<String> bin = new BinaryTree<>(root);
 
@@ -36,17 +36,28 @@ public class BinTreeTry {
             System.out.print(iteratorPos.next() + " ");
         }
         System.out.println("");
-        
+
         LinkedList<String> depthList = (LinkedList<String>) bin.binTreeDepthSearch();
         Iterator<String> iteratorDepth = depthList.iterator();
         while (iteratorDepth.hasNext()) {
             System.out.print(iteratorDepth.next() + " ");
         }
         System.out.println("");
-        
-        System.out.println(bin.height());
-        
-        
-        
+        System.out.print(bin.height());
+        System.out.println("");
+        System.out.println(bin.isCompleteTree());
+
+        BinaryTree<String> binCreate = new BinaryTree<>();
+        binCreate.depthInsert("a");
+        binCreate.depthInsert("b");
+        binCreate.depthInsert("c");
+        binCreate.depthInsert("d");
+        binCreate.depthInsert("e");
+        LinkedList<String> depthList2 = (LinkedList<String>) binCreate.binTreeDepthSearch();
+        Iterator<String> iteratorDepth2 = depthList2.iterator();
+        while (iteratorDepth2.hasNext()) {
+            System.out.print(iteratorDepth2.next() + " ");
+        }
+
     }
 }

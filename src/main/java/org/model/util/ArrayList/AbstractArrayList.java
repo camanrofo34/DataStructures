@@ -13,6 +13,6 @@ import org.model.util.list.List;
  * @author PC 4060TI
  * @param <E>
  */
-public abstract class AbstractArrayList<E> extends AbstractCollection<E> implements List<E>, Array<E>{
+public abstract class AbstractArrayList<E> implements List<E>, Array<E>{
     
 }

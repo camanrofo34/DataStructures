@@ -4,11 +4,15 @@
  */
 package org.model.util.array;
 
+import java.io.Serializable;
+
 /**
  *
  * @author admin
  */
-public interface BufferArray {
+public interface BufferArray extends Serializable {
+
+    static final long serialVersionUID = 1L;
         /**
      * Resizes the array to the specified dimension. If the specified dimension is less than the current dimension, the array is truncated.
      * @param newDimension

@@ -17,7 +17,7 @@ import org.model.util.iterator.Iterator;
  * @author admin
  * @param <E>
  */
-public abstract class AbstractList<E> extends AbstractCollection<E> implements List<E>{
+public abstract class AbstractList<E> implements List<E>{
 
     protected int size;
 

@@ -1,6 +1,8 @@
 package org.model.util.node;
 
-public interface Node<E> {
+import java.io.Serializable;
+
+public interface Node<E> extends Serializable {
     /**
      * Sets an element in the node.
      * @param element

@@ -1,6 +1,10 @@
 package org.model.util.collection;
 import org.model.util.iterable.Iterable;
-public interface Collection<E> extends Iterable<E>{
+
+import java.io.Serializable;
+
+public interface Collection<E> extends Iterable<E>, Serializable {
+    static final long serialVersionUID = 1L;
     /**
      * Removes all elements from the collection.
      *

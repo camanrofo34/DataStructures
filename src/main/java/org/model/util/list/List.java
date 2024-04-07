@@ -4,6 +4,7 @@
  */
 package org.model.util.list;
 
+import java.io.Serializable;
 import java.util.function.Predicate;
 import java.util.function.ToIntFunction;
 import org.model.util.collection.Collection;
@@ -13,8 +14,8 @@ import org.model.util.collection.Collection;
  * @author Camilo
  * @param <E>
  */
-public interface List<E> {
-
+public interface List<E> extends Serializable, Collection<E> {
+    static final long serialVersionUID = 1L;
     /**
      * Appends the specified element to the end of this list.
      *

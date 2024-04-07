@@ -1,9 +1,11 @@
 package org.model.util.array;
 
+import java.io.Serializable;
 import java.util.function.Predicate;
 import org.model.util.collection.Collection;
 
-public interface Array<E> {
+public interface Array<E> extends Serializable, Collection<E>{
+    static final long serialVersionUID = 1L;
     /**
      * Inserts the specified element at the clear position in this collection..
      * @param element

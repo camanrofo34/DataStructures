@@ -12,6 +12,12 @@ package org.model.util.collection;
  * @param <E>
  */
 public abstract class AbstractCollection<E> implements Collection<E>, Cloneable{
-
-    
+    @Override
+    public AbstractCollection<E> clone() {
+        try {
+            return (AbstractCollection<E>) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
 }

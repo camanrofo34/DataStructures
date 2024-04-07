@@ -1,6 +1,8 @@
 package org.model.util.iterator;
 
-public interface Iterator<E> {
+import java.io.Serializable;
+
+public interface Iterator<E> extends Serializable {
     /**
      * Determines if the iterator has more elements.
      * @return 'true' if the iterator has more elements, otherwise 'false'.

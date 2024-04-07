@@ -4,12 +4,14 @@
  */
 package org.model.util.stack;
 
+import java.io.Serializable;
+
 /**
  *
  * @author informatica
  * @param <E>
  */
-public interface Stack<E> {
+public interface Stack<E> extends Serializable {
     public E peek();
     public E pop();
     public boolean push(E element);
