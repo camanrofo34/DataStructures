@@ -116,7 +116,7 @@ public class HashTable<E> extends AbstractHashTable<E> {
     @Override
     public boolean put(String key, E element) {
         try {
-            tabla.get(dispersionFunction(key)).addFirst(element);
+            tabla.get(dispersionFunction(key)).add(element);
             return true;
         } catch (Exception e) {
             Logger.getLogger(this.getClass().getName()).log(Level.WARNING, e.getMessage(), e);
@@ -130,6 +130,15 @@ public class HashTable<E> extends AbstractHashTable<E> {
             return tabla.get(dispersionFunction(key)).peekLast();
         } catch (Exception e) {
             return null;
+        }
+    }
+
+    public Boolean remove(String key) {
+        try {
+            tabla.get(dispersionFunction(key)).pollLast();
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 }
