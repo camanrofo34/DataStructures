@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Estructuras:jar2">
+    <output-path>$PROJECT_DIR$/out/artifacts/Estructuras_jar2</output-path>
+    <root id="archive" name="Estructuras.jar">
+      <element id="module-output" name="Estructuras" />
+    </root>
+  </artifact>
+</component>
